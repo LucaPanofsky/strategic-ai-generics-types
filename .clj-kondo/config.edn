@@ -1,0 +1,5 @@
+{:lint-as {strategic-ai.generics-types.impl.macros/defpredicate clj-kondo.lint-as/def-catch-all
+           strategic-ai.generics-types.generics.generics/defgeneric  clj-kondo.lint-as/def-catch-all}
+ :hooks {:analyze-call {strategic-ai.generics-types.impl.macros/defhandler                    hooks.macros/defhandler
+                        strategic-ai.generics-types.impl.macros/defrel                    hooks.macros/defrel
+                        strategic-ai.generics-types.infostructure.macros/definfostructure hooks.definfostructure/definfostructure}}}

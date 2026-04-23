@@ -1,0 +1,9 @@
+{:paths ["src" "kondo-exports" "resources"]
+ :deps {cljfmt/cljfmt {:mvn/version "0.9.2"}}
+ :aliases
+ {:test
+  {:extra-paths ["test"]
+   :extra-deps  {io.github.cognitect-labs/test-runner {:git/tag "v0.5.1" :git/sha "dfb30dd"}}
+   :exec-fn     cognitect.test-runner.api/test}
+  :userspace
+  {:extra-paths ["src" "userspace"]}}}

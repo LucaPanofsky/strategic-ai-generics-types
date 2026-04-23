@@ -1,0 +1,11 @@
+.cpcache/
+.clj-kondo/.cache/
+target/
+.nrepl-port
+*.class
+*.jar
+.lsp/
+.calva/
+.DS_Store
+.claude/settings.local.json
+FUTURE_CLAUDE.md

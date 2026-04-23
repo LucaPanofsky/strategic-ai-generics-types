@@ -1,0 +1,70 @@
+{:terms
+ [(propagate number? :from [:x0] :to :number?__x0)
+  (propagate not :from [:number?__x0] :to :not__number?__x0)
+  (switch [:number?__x0 :x1] :to :if__number?__x0_x1)
+  (propagate
+   number?
+   :from
+   [:if__number?__x0_x1]
+   :to
+   :number?__if__number?__x0_x1)
+  (cell/constant :constant_false false)
+  (switch
+   [:number?__x0 :number?__if__number?__x0_x1]
+   :to
+   :if__number?__x0_number?__if__number?__x0_x1_constant_false)
+  (switch
+   [:not__number?__x0 :constant_false]
+   :to
+   :if__number?__x0_number?__if__number?__x0_x1_constant_false)
+  (switch
+   [:if__number?__x0_number?__if__number?__x0_x1_constant_false :x1]
+   :to
+   :when__if__number?__x0_number?__if__number?__x0_x1_constant_false_x1)
+  (switch
+   [:if__number?__x0_number?__if__number?__x0_x1_constant_false :x0]
+   :to
+   :when__if__number?__x0_number?__if__number?__x0_x1_constant_false_x0)
+  (propagate
+   my-op-number-number
+   :from
+   [:when__if__number?__x0_number?__if__number?__x0_x1_constant_false_x0
+    :when__if__number?__x0_number?__if__number?__x0_x1_constant_false_x1]
+   :to
+   :my-op-number-number__when__if__number?__x0_number?__if__number?__x0_x1_constant_false_x0_when__if__number?__x0_number?__if__number?__x0_x1_constant_false_x1)
+  (propagate string? :from [:x0] :to :string?__x0)
+  (propagate not :from [:string?__x0] :to :not__string?__x0)
+  (switch [:string?__x0 :x1] :to :if__string?__x0_x1)
+  (propagate
+   string?
+   :from
+   [:if__string?__x0_x1]
+   :to
+   :string?__if__string?__x0_x1)
+  (switch
+   [:string?__x0 :string?__if__string?__x0_x1]
+   :to
+   :if__string?__x0_string?__if__string?__x0_x1_constant_false)
+  (switch
+   [:not__string?__x0 :constant_false]
+   :to
+   :if__string?__x0_string?__if__string?__x0_x1_constant_false)
+  (switch
+   [:if__string?__x0_string?__if__string?__x0_x1_constant_false :x1]
+   :to
+   :when__if__string?__x0_string?__if__string?__x0_x1_constant_false_x1)
+  (switch
+   [:if__string?__x0_string?__if__string?__x0_x1_constant_false :x0]
+   :to
+   :when__if__string?__x0_string?__if__string?__x0_x1_constant_false_x0)
+  (propagate
+   my-op-string-string
+   :from
+   [:when__if__string?__x0_string?__if__string?__x0_x1_constant_false_x0
+    :when__if__string?__x0_string?__if__string?__x0_x1_constant_false_x1]
+   :to
+   :my-op-string-string__when__if__string?__x0_string?__if__string?__x0_x1_constant_false_x0_when__if__string?__x0_string?__if__string?__x0_x1_constant_false_x1)],
+ :inputs [:x0 :x1],
+ :output
+ [:my-op-number-number__when__if__number?__x0_number?__if__number?__x0_x1_constant_false_x0_when__if__number?__x0_number?__if__number?__x0_x1_constant_false_x1
+  :my-op-string-string__when__if__string?__x0_string?__if__string?__x0_x1_constant_false_x0_when__if__string?__x0_string?__if__string?__x0_x1_constant_false_x1]}
