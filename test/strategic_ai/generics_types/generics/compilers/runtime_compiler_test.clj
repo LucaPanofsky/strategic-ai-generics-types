@@ -24,6 +24,11 @@
 
 (defn rc-emit-helper [x y] (if (= x y) x :mismatch))
 
+(defn rc-source-helper [x] (* x 100))
+
+(defn rc-inner-helper [x] (+ x 1))
+(defn rc-outer-helper [x] (rc-inner-helper x))
+
 (comment
   "Config spec — shape validation")
 
@@ -200,6 +205,32 @@
         "helper defn should be emitted")
     (is (str/includes? content "rc-helper-op")
         "compiled generic should be emitted")))
+
+(deftest it-must-be-that-plain-helpers-called-from-handler-body-are-emitted
+  (m/defpredicate rc-sh-number? [x] (number? x))
+  (g/defgeneric rc-sh-op [x] :default)
+  (m/defhandler rc-sh-op [rc-sh-number?] [x] (rc-source-helper x))
+  (let [config  {:protocol  "src/protocol.clj"
+                 :namespace 'compiled.rc-source-helper-test
+                 :output    "test-outputs/compiled/rc_source_helper_test.clj"}
+        _       (rc/emit-runtime! config [#'rc-sh-op])
+        content (slurp "test-outputs/compiled/rc_source_helper_test.clj")]
+    (is (str/includes? content "(defn rc-source-helper")
+        "helper called from handler body must be emitted")))
+
+(deftest it-must-be-that-chained-helpers-are-emitted-transitively
+  (m/defpredicate rc-ch-number? [x] (number? x))
+  (g/defgeneric rc-ch-op [x] :default)
+  (m/defhandler rc-ch-op [rc-ch-number?] [x] (rc-outer-helper x))
+  (let [config  {:protocol  "src/protocol.clj"
+                 :namespace 'compiled.rc-chain-helper-test
+                 :output    "test-outputs/compiled/rc_chain_helper_test.clj"}
+        _       (rc/emit-runtime! config [#'rc-ch-op])
+        content (slurp "test-outputs/compiled/rc_chain_helper_test.clj")]
+    (is (str/includes? content "(defn rc-outer-helper")
+        "outer helper called from handler body must be emitted")
+    (is (str/includes? content "(defn rc-inner-helper")
+        "inner helper transitively called must also be emitted")))
 
 (comment
   "build-constructor-defn — pure function, builds constructor defn form from a plan")

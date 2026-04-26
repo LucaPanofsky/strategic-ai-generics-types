@@ -1,6 +1,6 @@
 (ns compiled.rc-ctor-test
   "Compiled by @strategic-ai/generic-types 0.0.1-alpha
-Generated: 2026-04-22T19:40:49.878468847Z
+Generated: 2026-04-26T13:45:47.043844943Z
 
 ## footprint
 
