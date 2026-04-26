@@ -1,6 +1,6 @@
 (ns compiled.rc-req-test
   "Compiled by @strategic-ai/generic-types 0.0.1-alpha
-Generated: 2026-04-22T19:40:49.895977099Z
+Generated: 2026-04-26T13:45:47.082171733Z
 
 ## footprint
 

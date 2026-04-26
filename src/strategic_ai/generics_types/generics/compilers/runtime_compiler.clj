@@ -346,6 +346,33 @@
               (defn-form-from-source (first default-expr)))))
         generic-vars))
 
+(defn- dangling-symbols [forms]
+  (let [defined-set (into #{} (map defined-name) forms)
+        core-ns     (the-ns 'clojure.core)
+        refs        (volatile! #{})]
+    (doseq [form forms]
+      (walk/postwalk
+       (fn [node]
+         (when (and (symbol? node)
+                    (nil? (namespace node))
+                    (not (contains? defined-set node))
+                    (not (ns-resolve core-ns node)))
+           (vswap! refs conj node))
+         node)
+       (drop 3 form)))
+    @refs))
+
+(defn- collect-source-helpers [defn-forms]
+  (loop [forms defn-forms
+         seen  (into #{} (map defined-name) defn-forms)]
+    (let [new-helpers (->> (dangling-symbols forms)
+                           (keep defn-form-from-source)
+                           (remove #(contains? seen (defined-name %))))]
+      (if (empty? new-helpers)
+        forms
+        (recur (concat forms new-helpers)
+               (into seen (map defined-name new-helpers)))))))
+
 (defn- load-all! [{:keys [protocol sources]}]
   (load-file protocol)
   (doseq [path sources]
@@ -378,7 +405,7 @@
         constructor-defns  (keep build-constructor-defn (protocol/i:all-plans brain/*brain*))
         default-defns      (extract-default-defn generic-vars)
         generic-defns      (map build-generic-defn generic-vars)
-        all-defns          (topsort-forms (concat pred-defns handler-defns constructor-defns default-defns generic-defns))
+        all-defns          (topsort-forms (collect-source-helpers (concat pred-defns handler-defns constructor-defns default-defns generic-defns)))
         to-decl            (names-requiring-declaration all-defns)
         declare-str        (when (seq to-decl)
                              (format-forms [(apply list 'declare to-decl)]))
