@@ -29,4 +29,4 @@ jobs:
           key: ${{ runner.os }}-clojure-${{ hashFiles('deps.edn') }}
           restore-keys: ${{ runner.os }}-clojure-
 
-      - run: clj -X:test
+      - run: clojure -X:test
